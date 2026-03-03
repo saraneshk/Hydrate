@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>💧 Hydrate — Water Reminder</title>
+    <meta name="description"
+        content="A beautiful water drinking reminder that alerts you every hour after you wake up.">
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0e27">
+
+    <!-- iOS / Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Hydrate">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <!-- Splash screens for iOS -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Fonts & Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="bubbles-bg" id="bubblesBg"></div>
+
+    <main class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">💧</span>
+                <h1>Hydrate</h1>
+            </div>
+            <p class="subtitle">Stay refreshed. Stay healthy.</p>
+        </header>
+
+        <!-- Install Banner (iOS) -->
+        <section id="installBanner" class="install-banner hidden">
+            <div class="install-content">
+                <span class="install-icon">📲</span>
+                <div class="install-text">
+                    <strong>Add to Home Screen</strong>
+                    <span>Tap <img
+                            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%234facfe' stroke-width='2'%3E%3Cpath d='M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8'/%3E%3Cpolyline points='16 6 12 2 8 6'/%3E%3Cline x1='12' y1='2' x2='12' y2='15'/%3E%3C/svg%3E"
+                            alt="share" class="share-icon"> then "Add to Home Screen"</span>
+                </div>
+                <button class="install-close" onclick="dismissInstall()" aria-label="Close">✕</button>
+            </div>
+        </section>
+
+        <!-- State: Sleeping (Initial) -->
+        <section id="sleepState" class="card glass-card">
+            <div class="card-inner">
+                <div class="sleep-icon">🌙</div>
+                <h2>Good Morning!</h2>
+                <p>Tap below when you wake up and I'll remind you to drink water every hour.</p>
+                <button id="wakeUpBtn" class="btn btn-primary btn-glow" onclick="wakeUp()">
+                    <span class="btn-icon">☀️</span>
+                    <span>I'm Awake!</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- State: Awake (Active) -->
+        <section id="awakeState" class="card glass-card hidden">
+            <div class="card-inner">
+                <!-- Timer Ring -->
+                <div class="timer-container">
+                    <svg class="timer-svg" viewBox="0 0 200 200">
+                        <circle class="timer-track" cx="100" cy="100" r="90" />
+                        <circle class="timer-progress" id="timerProgress" cx="100" cy="100" r="90" />
+                    </svg>
+                    <div class="timer-text">
+                        <span id="timerMinutes" class="timer-value">60</span>
+                        <span class="timer-label">minutes</span>
+                    </div>
+                </div>
+
+                <p class="next-reminder-text">Next reminder in</p>
+
+                <!-- Stats Row -->
+                <div class="stats-row">
+                    <div class="stat">
+                        <span class="stat-value" id="glassCount">0</span>
+                        <span class="stat-label">Glasses</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <span class="stat-value" id="mlCount">0</span>
+                        <span class="stat-label">ml</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <span class="stat-value" id="awakeTime">0h 0m</span>
+                        <span class="stat-label">Awake</span>
+                    </div>
+                </div>
+
+                <!-- Drink Button -->
+                <button id="drinkBtn" class="btn btn-drink" onclick="drinkWater()">
+                    <span class="btn-icon">💧</span>
+                    <span>I Drank Water!</span>
+                </button>
+
+                <!-- Water Log -->
+                <div class="log-section" id="logSection">
+                    <h3 class="log-title">Today's Log</h3>
+                    <div class="log-list" id="logList"></div>
+                </div>
+
+                <!-- Sleep Button -->
+                <button class="btn btn-secondary" onclick="goToSleep()">
+                    <span class="btn-icon">🌙</span>
+                    <span>Going to Sleep</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Toast Notification -->
+        <div class="toast hidden" id="toast">
+            <span class="toast-icon">💧</span>
+            <span class="toast-text" id="toastText">Time to drink water!</span>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
